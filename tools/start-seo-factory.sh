@@ -336,15 +336,38 @@ P2_PROMPT="Read skills/write-article.md and write the article.
 
 Research: ${RESEARCHER_DIR}/outputs/research.md
 
-IMPORTANT - SEO Factory special instructions:
-1. Read the SEO brief first (CRITICAL): ${SEO_ANALYST_DIR}/outputs/seo-brief.md
-2. Follow the outline structure from Part 2 of the brief exactly
-3. Insert CTAs at positions marked with CTA tags
-4. Place Citability blocks (134-167 words) at AIO-tagged positions
-5. Insert experience/testimonials at E-E-A-T:Experience tagged positions
-6. Target KW '${KW}' density: 1-3% in title, h2, and body
-7. All data must have inline citations (source + date + URL)
-8. Direct Answer structure: conclusion in 1-2 sentences then expand
+*** CRITICAL: This article will be scored by a strict SEO/AIO review (Phase 3c). Only 90+ out of 100 passes. Follow ALL rules below or the article WILL be rejected. ***
+
+0. READ THE SEO BRIEF FIRST (entire document): ${SEO_ANALYST_DIR}/outputs/seo-brief.md
+   Pay special attention to Part 2 (outline) and the 'Writer Must-Read' section at the end.
+
+1. FOLLOW THE OUTLINE 100%: Match the brief's heading structure exactly. Changing it = 0 points for Brief Compliance.
+
+2. HOOK IN FIRST 3 LINES: Start with shocking data, a paradox, or a candid confession. NEVER 'In this article, we will explore...' (-5 points).
+
+3. 2+ FIRST-HAND EXPERIENCES: Include specific dates, places, and numbers. 'We tried it and it was great' is too vague (-10 points). Target: 'After implementing X in Feb 2026, task time dropped by 42%'.
+
+4. 15+ CITATIONS: 50%+ must be primary sources (government stats, academic papers, official announcements). Every citation needs: source name + date + URL.
+
+5. DIRECT ANSWER STRUCTURE: Every h2 section opens with 1-2 sentence conclusion THEN expands. NEVER 'Let us look at...' (-5 points). Target: 'X is a Y that does Z. Specifically...'
+
+6. CITABILITY BLOCKS: Place 134-167 word self-contained summary paragraphs at AIO-tagged sections. These must be quotable by AI without additional context.
+
+7. 2+ TABLES: Comparison data MUST be in markdown tables. Writing comparisons in prose = -3 points each.
+
+8. KW DENSITY 1.5-2.5%: Target keyword '${KW}' in natural context. Over 3% = over-optimization penalty.
+
+9. RELATED KW 80%+ COVERAGE: Check the brief's Part 6 keyword list and intentionally weave them in.
+
+10. ZERO AI-SOUNDING PHRASES:
+    BANNED: 'It is important to note' / 'It is worth mentioning' / 'Notably' / em dashes / slash parallels ('efficiency/quality') = -3 points EACH
+    BANNED: Same sentence ending 3 times in a row = -2 points
+    BANNED: 'Furthermore'/'Additionally'/'Moreover' 5+ times = -3 points
+    BANNED: Bullet points exceeding 50% of body text = -5 points
+
+11. FAIR & BALANCED: Include counterarguments and limitations. One-sided promotion = -8 points for Trustworthiness.
+
+12. NATURAL CTAs (2-4): Insert at CTA-tagged positions. Zero pushiness. Must feel like a natural part of the narrative.
 
 Save output to: outputs/article.md
 Write Phase 2 completion notice to:
@@ -400,7 +423,7 @@ SEO_REVIEW_FILE="${SEO_ANALYST_DIR}/outputs/seo-review.md"
 SEO_REJECTED=0
 
 if [ -f "${SEO_REVIEW_FILE}" ]; then
-    if grep -qi "reject\|差し戻し" "${SEO_REVIEW_FILE}"; then
+    if grep -qi "reject\|差し戻し\|CRITICAL\|79以下" "${SEO_REVIEW_FILE}"; then
         SEO_REJECTED=1
         log "SEO/AIO Review: REJECTED"
         "${SCRIPT_DIR}/notify-complete.sh" "SEO Factory: Article rejected. Writer revision needed."
