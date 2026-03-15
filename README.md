@@ -1,227 +1,292 @@
-# SEO Content Factory for Claude Code
+# SEO Content Factory
 
-**対策キーワードを投げるだけで、SEO×AIO最適化された記事が完成する全自動パイプライン。**
+**「検索キーワードを1つ入力するだけで、SEO最適化された記事が全自動で完成する」仕組みです。**
 
-Claude Code の Agent Teams（AI社員間リレー）を活用し、7フェーズ×5エージェントが全自動で連携。SEO分析 → リサーチ → 執筆 → 3並列レビュー → 成果物格納まで、人間の介入なしで完走します。
+---
 
-## Architecture
+## これは何？
+
+Google検索で上位表示を狙う記事を作るとき、普通はこういう作業が必要です：
+
+1. 競合の上位記事を調べる
+2. 検索意図を分析する
+3. 記事の構成案を作る
+4. 裏付けデータをリサーチする
+5. 記事を書く
+6. SEO的に問題ないかチェックする
+7. サムネイルを作る
+8. Google Driveに格納する
+
+**SEO Content Factory は、この1〜8の全工程を自動化します。**
+
+あなたがやることは「狙いたい検索キーワードを入力する」だけ。
+あとは5人のAIエージェントが順番にバトンを渡しながら、全工程を自動で完走します。
+
+---
+
+## どんな仕組み？
+
+### 「AIの工場ライン」をイメージしてください
 
 ```
-Phase 0: SEO Analyst（SEO/AIO分析 → 指示書 + 構成案）
-    ↓
-Phase 1: Researcher（SEO特化リサーチ）
-    ↓
-Phase 2: Writer（SEO最適化記事執筆）
-    ↓ 並行
-Phase 3a: Designer（サムネイル）
-Phase 3b: QA（記事品質レビュー）
-Phase 3c: SEO Analyst（SEO/AIOスコアリング）
-    ↓
-Phase 4: Publisher（成果物格納・共有）
+あなた: 「Claude Code 使い方」で記事を作って！
+          ↓
+  ┌─────────────────────────────────────────────┐
+  │              SEO Content Factory              │
+  │                                               │
+  │  工程1  SEOアナリスト                          │
+  │         競合上位10記事を分析し、               │
+  │         「どんな記事を書けば勝てるか」を設計   │
+  │              ↓                                │
+  │  工程2  リサーチャー                           │
+  │         設計書に基づいてデータ・事例・          │
+  │         統計情報を収集                         │
+  │              ↓                                │
+  │  工程3  ライター                               │
+  │         リサーチ結果をもとに                    │
+  │         SEO最適化された記事を執筆              │
+  │              ↓                                │
+  │  工程4  3人が同時にチェック                    │
+  │         ├─ デザイナー → サムネイル作成         │
+  │         ├─ 品質管理   → 事実確認・校正         │
+  │         └─ SEOアナリスト → SEOスコア採点       │
+  │              ↓                                │
+  │  工程5  成果物をGoogle Driveに保存              │
+  │                                               │
+  └─────────────────────────────────────────────┘
+          ↓
+  完成！ 記事 + サムネイル + SEOレポートが届く
 ```
 
-### vs 従来のSEOワークフロー
+### 普通のAIライティングと何が違う？
 
-| | 従来（手動） | SEO Content Factory |
+ChatGPTやClaudeに「記事を書いて」と頼むのとは根本的に違います。
+
+| | 普通のAIライティング | SEO Content Factory |
 |---|---|---|
-| フェーズ数 | 2（指示書→構成案で終わり） | 7（記事完成+格納まで全自動） |
-| 競合分析 | 上位数記事を表面的に | 上位10記事を構造レベルで解析 |
-| E-E-A-T | 考慮なし | 4軸×体験配置設計 |
-| AI検索対応 | なし | Citabilityブロック・Direct Answer・Schema |
-| 品質管理 | なし | SEO/AIO/E-E-A-T 3軸×100点スコアリング |
-| 差し戻し | なし | スコア69以下で自動差し戻し→改善ループ |
+| 競合分析 | しない | Google上位10記事の構造を解析 |
+| 検索意図 | 考えない | 自動分類して記事設計に反映 |
+| E-E-A-T | 無視 | 体験談・専門性・権威ある出典を戦略的に配置 |
+| AI検索対応 | 未対応 | Google AI Overviews・ChatGPT・Perplexityに引用されやすい構造 |
+| 品質管理 | なし | 100点満点×3軸で自動採点。基準以下は自動やり直し |
+| 出典 | 曖昧 | 全データに出典URL・発行年月を必ず付与 |
+| 工程数 | 1回のプロンプト | 7工程×5エージェントの分業 |
 
-## Quick Start
+---
 
-### 1. 前提条件
+## 3つの強み
 
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) がインストール済み
-- **どのターミナルでもOK**（iTerm2, Antigravity, Terminal.app, Warp, Linux terminals）
-- Bash 4+
+### 1. SEO × AIO（AI検索最適化）の両方に対応
 
-### 2. セットアップ
+2025年以降、Google検索は「AI Overviews」（AIによる要約回答）が検索結果の上部に表示されるようになりました。従来のSEO対策だけでは不十分で、**AIに引用されやすい記事構造**が新たに求められています。
+
+SEO Content Factoryは：
+- **従来のSEO**：キーワード配置、見出し構造、内部リンク、メタデータ最適化
+- **AI検索対応（AIO/GEO）**：AIが引用しやすい134〜167語の要約ブロック、Direct Answer構造、構造化データ
+
+この両方を自動設計します。
+
+### 2. E-E-A-T（Googleの品質評価基準）を自動設計
+
+Googleは2025年12月のアップデートで、**全ての競争的な検索キーワードにE-E-A-T基準を適用**するようになりました。
+
+| 基準 | 意味 | この仕組みでの対応 |
+|---|---|---|
+| **Experience（体験）** | 実体験に基づいているか | 体験談を入れるべきセクションを自動指定 |
+| **Expertise（専門性）** | 専門知識が正確か | 業界データ・統計を自動リサーチ |
+| **Authoritativeness（権威性）** | 信頼できる情報源か | 政府統計・学術論文を優先収集 |
+| **Trustworthiness（信頼性）** | 出典が明示されているか | 全データにインライン出典を必須化 |
+
+### 3. 100点満点×3軸の自動採点で品質保証
+
+記事が完成した後、自動的にSEO品質チェックが走ります。
+
+- **SEOスコア**（100点）：タイトル、見出し構造、キーワード配置、内部リンク
+- **AIOスコア**（100点）：AI引用されやすさ、構造の明確さ、出典の権威性
+- **E-E-A-Tスコア**（100点）：体験、専門性、権威性、信頼性
+
+**合計85点以上** → 合格。次の工程（Google Drive保存）に進む
+**70〜84点** → 条件付き合格。改善メモを付けて通過
+**69点以下** → 不合格。改善指示を自動生成し、ライターに差し戻して書き直し
+
+---
+
+## 使い方
+
+### 必要なもの
+
+1. **Claude Code**（Anthropic社のAI開発ツール）
+   - [公式サイト](https://docs.anthropic.com/en/docs/claude-code)からインストール
+   - ターミナル（黒い画面）で動くAIアシスタントです
+2. **ターミナル**（何でもOK：Mac標準のTerminal、iTerm2、Antigravity、Warp、Linux等）
+3. **Anthropic APIキー**（Claude Codeの利用に必要）
+
+### セットアップ（初回のみ）
 
 ```bash
+# 1. このリポジトリをダウンロード
 git clone https://github.com/UC5454/seo-content-factory.git
 cd seo-content-factory
 
-# 設定ファイルをコピー
+# 2. 設定ファイルを作成
 cp .env.example .env
 cp config.example.yaml config.yaml
 
-# .env にAPIキー等を設定
-vim .env
-
-# config.yaml にチーム構成・パスを設定
-vim config.yaml
+# 3. .env を編集してAPIキーを設定
+#    ANTHROPIC_API_KEY=sk-ant-xxxxx のように入力
 ```
 
-### 3. 起動
+### 起動
 
 ```bash
-# ヘッドレスモード（デフォルト。どのターミナルでも動く）
-./tools/start-seo-factory.sh "対策キーワード"
+# キーワードを指定して起動
+./tools/start-seo-factory.sh "Claude Code 使い方"
 
-# ユーザーメモ付き
-./tools/start-seo-factory.sh "対策キーワード" "CTAはhttps://example.com/contactへ誘導"
-
-# ビジュアルモード（各Phaseが新しいターミナルウィンドウで開く。macOS）
-./tools/start-seo-factory.sh --visual "対策キーワード"
+# 追加の指示がある場合（CTAの指定、ターゲット層の指定など）
+./tools/start-seo-factory.sh "Claude Code 使い方" "30代エンジニア向け。自社サービスへのCTA付き"
 ```
 
-#### 実行モードの違い
+起動すると、5人のAIエージェントが順番に作業を進めます。
+全工程が完了すると通知が届きます。
 
-| モード | 起動方法 | 特徴 |
-|---|---|---|
-| **ヘッドレス（デフォルト）** | `./start-seo-factory.sh "KW"` | どのOS・ターミナルでも動作。バックグラウンドで全Phase実行 |
-| **ビジュアル** | `./start-seo-factory.sh --visual "KW"` | macOS専用。各Phaseが新しいターミナルウィンドウで開く |
+### Claude Code のスラッシュコマンドとして登録
 
-ヘッドレスモードはAntigravity、Warp、Alacritty、Linux上のターミナルなど、claude CLIが動く環境なら全て対応。
-
-### 4. Claude Code スラッシュコマンドとして使う
-
-`.claude/commands/start-seo-factory.md` を自分の Claude Code プロジェクトにコピー:
+Claude Code を普段使っている人は、スラッシュコマンドとして登録できます：
 
 ```bash
+# プロジェクトにコピー
 cp .claude/commands/start-seo-factory.md /path/to/your/project/.claude/commands/
 ```
 
-→ `/start-seo-factory Gemini Code Assist` で起動可能に。
+以後、Claude Code の中で `/start-seo-factory Claude Code 使い方` と打つだけで起動できます。
 
-## Configuration
+---
 
-### `.env`（APIキー・認証情報）
+## 技術的な仕組み（詳しく知りたい人向け）
 
-```bash
-# .env.example を参照
-ANTHROPIC_API_KEY=your-key-here
-GOOGLE_WORKSPACE_EMAIL=your-email@example.com
-```
-
-### `config.yaml`（チーム構成・パス設定）
-
-```yaml
-# config.example.yaml を参照
-base_dir: /path/to/your/project
-seo_analyst_dir: /path/to/seo-analyst
-researcher_dir: /path/to/researcher
-writer_dir: /path/to/writer
-# ...
-```
-
-## File Structure
+### ファイル構成
 
 ```
 seo-content-factory/
-├── .claude/
-│   └── commands/
-│       └── start-seo-factory.md    # スラッシュコマンド定義
-├── skills/
-│   ├── seo-content-brief.md        # Phase 0: SEO/AIO分析スキル
-│   └── seo-aio-review.md           # Phase 3c: SEO/AIOレビュースキル
 ├── tools/
-│   ├── start-seo-factory.sh        # オーケストレーター（メイン）
-│   ├── resolve-claude.sh           # Claude CLIパス解決
-│   └── notify-complete.sh          # 完了通知
-├── example-team/
-│   ├── seo-analyst/                # Phase 0 & 3c の例
-│   ├── researcher/                 # Phase 1 の例
-│   ├── writer/                     # Phase 2 の例
-│   ├── designer/                   # Phase 3a の例
-│   ├── qa/                         # Phase 3b の例
-│   └── publisher/                  # Phase 4 の例
-├── config.example.yaml             # チーム構成テンプレート
-├── .env.example                    # 環境変数テンプレート
-├── .gitignore
-├── LICENSE
-└── README.md
+│   └── start-seo-factory.sh     # 全体を制御するオーケストレーター
+├── skills/
+│   ├── seo-content-brief.md     # 工程1の作業手順書（SEO分析・構成案作成）
+│   └── seo-aio-review.md        # 工程4の採点基準書（SEOスコアリング）
+├── .claude/commands/
+│   └── start-seo-factory.md     # スラッシュコマンド定義
+├── config.example.yaml          # チーム構成の設定テンプレート
+├── .env.example                 # APIキー等の設定テンプレート
+└── .gitignore                   # APIキー等を誤公開しないための除外設定
 ```
 
-## Phase Details
+### 各工程の詳細
 
-### Phase 0: SEO/AIO Analysis（SEO Analyst）
+#### 工程1: SEO分析（SEO Analyst）
 
-対策キーワードに対して:
+対策キーワードをもとに、以下を自動実行します：
 
-1. **検索意図の自動分類**（Informational / Commercial / Transactional / Navigational）
-2. **競合上位10記事の構造分析**（URL・文字数・h2数・Schema有無）
-3. **PAA・LSI・共起語・サジェスト収集**
-4. **E-E-A-T戦略設計**（体験配置・権威ソース特定・信頼性要素）
-5. **AIO/GEO戦略**（Citabilityブロック・Direct Answer・マルチモーダル）
-6. **指示書 + 構成案 + Schema設計**を一括出力
-7. **品質ゲート検証**（構成案の網羅性・差別化・整合性チェック）
+- **検索意図の分類**：「情報収集」「比較検討」「購入」「ナビゲーション」のどれか
+- **競合上位10記事の構造分析**：各記事のURL、文字数、見出し数、構造化データの有無
+- **関連キーワード収集**：「他の人はこちらも質問」（PAA）、サジェスト、共起語
+- **E-E-A-T戦略設計**：体験談をどこに入れるか、どの権威ソースを引用するか
+- **AI検索対応設計**：AIに引用されやすい段落構造の設計
+- **構成案の作成**：見出し一覧 + CTA配置 + Schema（構造化データ）設計
 
-### Phase 1: SEO-Focused Research（Researcher）
+出力: `seo-brief.md`（指示書 + 構成案）
 
-通常のリサーチに加えて:
-- SEOブリーフのE-E-A-T戦略に基づく裏付けデータ収集
-- Direct Answer対象FAQの正確な回答データ
-- コンテンツギャップの差別化トピック深掘り
-- 全データに出典URL + 発行年月を必須付与
+#### 工程2: リサーチ（Researcher）
 
-### Phase 2: SEO-Optimized Writing（Writer）
+工程1の指示書に基づいて、裏付けデータを収集します：
 
-SEOブリーフの構成案に忠実に:
-- 【CTA】タグ位置に自然なCTAを挿入
-- 【AIO】タグ位置にCitabilityブロック（134-167語）を配置
-- 【E-E-A-T:Experience】タグ位置に体験談を挿入
-- KW密度1-3%、関連KW織り込み
-- Direct Answer構造（冒頭結論→詳細展開）
+- 政府統計・学術論文・公式発表などの権威ある情報源を優先
+- 全データに出典URL + 発行年月を付与
+- 記事の差別化ポイントになる独自データを重点収集
 
-### Phase 3: Triple Review（3 parallel）
+出力: `research.md`（リサーチレポート）
 
-| Agent | Focus | Output |
+#### 工程3: 執筆（Writer）
+
+構成案 + リサーチ結果をもとに記事を執筆します：
+
+- 構成案の見出し順序に忠実に執筆
+- 指定位置にCTA（行動喚起）を自然に挿入
+- AI引用ブロック（134〜167語の要約）をセクション冒頭に配置
+- キーワード出現率1〜3%を維持
+
+出力: `article.md`（記事本文）
+
+#### 工程4: 3並列レビュー
+
+3人のエージェントが同時にチェックします（待ち時間を短縮）：
+
+| 担当 | やること | 出力 |
 |---|---|---|
-| Designer | サムネイル・アイキャッチ作成 | thumbnail + concept |
-| QA | 記事品質・ファクトチェック | review.md |
-| SEO Analyst | **SEO/AIOスコアリング** | seo-review.md |
+| デザイナー | サムネイル・アイキャッチ画像を作成 | thumbnail画像 |
+| 品質管理 | 事実確認・誤字脱字・トーンのチェック | review.md |
+| SEOアナリスト | SEO/AIO/E-E-A-Tの3軸100点採点 | seo-review.md |
 
-#### SEO/AIO Scoring System（3軸×100点）
+**69点以下の場合、自動的にライターに差し戻され、改善指示付きで書き直しが走ります。**
 
-| Axis | Weight | Categories |
+#### 工程5: 保存（Publisher）
+
+全成果物をGoogle Driveに格納し、完了通知を送ります。
+
+### 実行モード
+
+| モード | コマンド | 説明 |
 |---|---|---|
-| SEO Score | 25% | Title(15) + Headings(20) + Content(30) + Technical(10) + Brief Compliance(25) |
-| AIO/GEO Score | 25% | Citability(25) + Structure(20) + MultiModal(15) + Authority(20) + Technical(20) |
-| E-E-A-T Score | 25% | Experience(30) + Expertise(25) + Authority(20) + Trust(25) |
-| Brief Compliance | 25% | Topics(10) + Differentiation(8) + User Memo(7) |
+| **ヘッドレス** | `./start-seo-factory.sh "KW"` | デフォルト。どのOS・ターミナルでも動作。AIが裏で全工程を実行 |
+| **ビジュアル** | `./start-seo-factory.sh --visual "KW"` | macOS専用。各工程が新しいターミナルウィンドウで開き、AIの作業をリアルタイムで見られる |
 
-**85+**: 承認 → Phase 4へ
-**70-84**: 条件付き承認（軽微な改善指示付き）
-**69以下**: 差し戻し → Writer に改善指示 → 再レビュー
+---
 
-### Phase 4: Publish（Publisher）
+## カスタマイズ
 
-成果物をGoogle Drive等に格納し、最終報告。
+### 自社情報の設定
 
-## Customization
+`config.example.yaml` をコピーして `config.yaml` を作成し、自社の情報を設定します：
 
-### エージェントの追加・変更
+```yaml
+company:
+  name: "株式会社あなたの会社"
+  url: "https://your-company.co.jp"
+  contact_url: "https://your-company.co.jp/contact"
+```
 
-`config.yaml` でエージェント名・パス・iTerm2プロファイル名を変更するだけ。スキルファイル（`skills/*.md`）の指示内容も自由にカスタマイズ可能。
+### 採点基準の調整
 
-### スコアリング基準のカスタマイズ
+`skills/seo-aio-review.md` のスコアリングテーブルを編集すると、業界やサイトの特性に合わせて配点を調整できます。
 
-`skills/seo-aio-review.md` 内のスコアリングテーブルを編集。業界・サイト特性に応じて配点を調整。
+### CTA・導線の変更
 
-### CTA・運営者情報のカスタマイズ
+`skills/seo-content-brief.md` 内のデフォルトCTA先URLを自社のものに変更できます。
 
-`skills/seo-content-brief.md` 内のデフォルトCTA・運営者情報を自社に変更。
+---
 
-## Requirements
+## 動作環境
 
-- **Claude Code CLI** v1.0+
-- **Any OS**: macOS, Linux, WSL (headless mode works everywhere)
-- **Any terminal**: iTerm2, Antigravity, Terminal.app, Warp, Alacritty, etc.
-- **Bash** 4+
-- Optional: Google Workspace integration (for Phase 4 Drive storage)
-- Optional: `--visual` flag requires macOS (auto-detects terminal app)
+- **Claude Code CLI**（[インストール方法](https://docs.anthropic.com/en/docs/claude-code)）
+- **OS**: macOS, Linux, WSL（Windows Subsystem for Linux）
+- **ターミナル**: 何でもOK（iTerm2, Antigravity, Terminal.app, Warp, Alacritty 等）
+- **Bash** 4 以上
+- オプション: Google Workspace連携（工程5のDrive保存用）
 
-## License
+---
 
-MIT License
+## 注意事項
 
-## Credits
+- `.env` ファイルにはAPIキーが含まれます。**絶対にGitHubにプッシュしないでください**（`.gitignore` で除外済み）
+- 記事の最終チェックは人間が行うことを推奨します。AIの出力は常に100%正確とは限りません
+- API利用料が発生します。1記事あたりのコスト目安は使用するモデルと記事の長さに依存します
 
-Built with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) by [UC5454](https://github.com/UC5454).
+---
 
-SEO methodology based on [claude-seo](https://github.com/AgriciDaniel/claude-seo) skills architecture.
+## ライセンス
+
+MIT License（商用利用・改変・再配布自由）
+
+## クレジット
+
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) を活用して構築。
+SEO分析手法は [claude-seo](https://github.com/AgriciDaniel/claude-seo) アーキテクチャをベースにしています。
