@@ -63,7 +63,52 @@ Search the target keyword and analyze top 10 articles:
 - Topics NOT covered by top articles but needed per search intent
 - Unique information only your company/author can provide
 
-### 3. Related Keyword Collection
+### 3. Primary Source Database Lookup (E-E-A-T Experience Core)
+
+**Automatically search the Primary Source Database for first-hand data matching the target keyword.**
+
+#### Database Info
+- Spreadsheet ID: configured in `config.yaml` → `primary_source_db.spreadsheet_id`
+- 5 sheets: Experiences, Case Studies, Speaking/Media, Original Data, Testimonials
+
+#### Lookup Steps
+
+1. Read all 5 sheets from the spreadsheet
+2. Match the **"Related KW" column** against the target keyword (fuzzy match on comma-separated values)
+3. Extract all matching entries and include them in the brief:
+
+```markdown
+### Primary Source Candidates (from Database)
+
+#### Experiences (→ E-E-A-T Experience)
+- EXP-XXX: {title} ({date})
+  - Result: {quantitative outcome}
+  - Learning: {insight}
+  → Article placement: {which section, how to use it}
+
+#### Case Studies (→ Expertise + Trust)
+- CASE-XXX: {client} ({industry})
+  - Challenge → Result: {metrics}
+  → Article placement: {which section}
+
+#### Speaking/Media (→ Authoritativeness)
+- MEDIA-XXX: {event} ({date}, {audience size})
+  → Use as author authority proof
+
+#### Original Data
+- DATA-XXX: {survey title}
+  → Use as evidence in {section}
+
+#### Testimonials
+- VOICE-XXX: {quote}
+  → Use near CTA for trust reinforcement
+```
+
+4. **If zero matches**: Note "No matching primary source data. Writer should draft experience sections in author's voice, marked for author review before publication."
+
+5. **Respect the "Public OK?" column**: Never use entries marked as non-public.
+
+### 4. Related Keyword Collection
 
 - **PAA (People Also Ask)**: Question list from search results
 - **Related searches**: Bottom of SERP suggestions

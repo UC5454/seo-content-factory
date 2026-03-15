@@ -64,6 +64,25 @@ agents:
     iterm_profile: "AI Agent: Publisher"
     skill: "skills/publish-to-drive.md"
 
+# Primary Source Database (Google Sheets)
+# A structured database of first-hand experiences, case studies,
+# speaking engagements, original data, and client testimonials.
+# The factory reads this DB in Phase 0 to inject real E-E-A-T data
+# into the brief, making articles impossible to replicate by competitors.
+#
+# Sheet structure:
+#   1. Experiences    - Author's first-hand experiences (dates, results, learnings)
+#   2. Case Studies   - Client AI implementation cases (anonymized, with metrics)
+#   3. Speaking/Media - Speaking engagements, media appearances (authority proof)
+#   4. Original Data  - Self-conducted surveys, analysis data
+#   5. Testimonials   - Quotable client feedback
+#
+# Each row has a "Related KW" column for automatic keyword matching.
+primary_source_db:
+  spreadsheet_id: "your-spreadsheet-id"
+  # To create the DB, copy the template:
+  # https://docs.google.com/spreadsheets/d/1AxYyEM0_Y7HPx0qjvx9rh5qARwE3WYhl5-dqhryr2bI/copy
+
 # Google Drive integration (Phase 4)
 google_drive:
   articles_folder_id: "your-google-drive-folder-id"
@@ -79,8 +98,8 @@ timeouts:
   phase_3c_seo_review: 1200   # 20 min
   phase_4_publish: 600        # 10 min
 
-# Quality gates
+# Quality gates (strict mode)
 quality:
-  seo_score_threshold: 85       # Auto-approve above this
-  conditional_threshold: 70      # Conditional approve 70-84
-  reject_threshold: 69           # Reject below this
+  seo_score_threshold: 90       # Auto-approve above this
+  conditional_threshold: 80      # Conditional approve 80-89
+  reject_threshold: 79           # Reject at or below this

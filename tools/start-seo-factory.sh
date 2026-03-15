@@ -303,6 +303,14 @@ Company: ${COMPANY_NAME}
 Contact URL: ${CONTACT_URL}
 ${MEMO_SECTION}
 
+PRIMARY SOURCE DATABASE (REQUIRED):
+Before creating the brief, read the Primary Source Database spreadsheet.
+The spreadsheet ID is configured in config.yaml (primary_source_db.spreadsheet_id).
+Read all 5 sheets: Experiences, Case Studies, Speaking/Media, Original Data, Client Testimonials.
+Match the 'Related KW' column against the target keyword.
+Include all matching entries in the brief as 'Primary Source Candidates' with specific placement instructions.
+If no matches found, note this and instruct the Writer to draft experience sections for author review.
+
 Save output to: outputs/seo-brief.md
 Write Phase 0 completion notice to: ${RESEARCHER_DIR}/INBOX.md
 Record in daily-logs."
