@@ -12,12 +12,15 @@ token.json
 *.key
 *.pem
 
-# Outputs (generated content)
-outputs/
-daily-logs/
+# Outputs (generated content, but keep directory structure)
+**/outputs/*
+!**/outputs/.gitkeep
+**/daily-logs/*
+!**/daily-logs/.gitkeep
 INBOX-archive/
 factory-*.log
 seo-factory-*.log
+tools/logs/
 
 # Python
 __pycache__/

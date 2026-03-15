@@ -139,48 +139,60 @@ Googleは2025年12月のアップデートで、**全ての競争的な検索キ
 2. **ターミナル**（何でもOK：Mac標準のTerminal、iTerm2、Antigravity、Warp、Linux等）
 3. **Anthropic APIキー**（Claude Codeの利用に必要）
 
-### セットアップ（初回のみ）
+### セットアップ（初回のみ・3分で完了）
 
 ```bash
-# 1. このリポジトリをダウンロード
+# 1. クローン
 git clone https://github.com/UC5454/seo-content-factory.git
 cd seo-content-factory
 
-# 2. セットアップスクリプトを実行（設定ファイル作成 + 権限設定）
+# 2. セットアップ（設定ファイル作成 + 権限設定を自動実行）
 ./setup.sh
 
-# 3. .env を編集してAPIキーを設定
-#    ANTHROPIC_API_KEY=sk-ant-xxxxx のように入力
-
-# 4. 一次情報データベースを作成（テンプレートをコピー）
-#    https://docs.google.com/spreadsheets/d/1AxYyEM0_Y7HPx0qjvx9rh5qARwE3WYhl5-dqhryr2bI/copy
-#    コピー後、config.yaml の primary_source_db.spreadsheet_id に新しいIDを設定
-#    各シートに自社の体験・事例・実績を入力していく
+# 3. APIキーを設定（1箇所書くだけ）
+vim .env
+# → ANTHROPIC_API_KEY=sk-ant-xxxxx を入力して保存
 ```
+
+**これだけで動きます。**
+
+#### オプション: 一次情報データベース（推奨）
+
+記事に「あなたの実体験」を自動で組み込みたい場合は、Google スプレッドシートのテンプレートをコピーして使います：
+
+1. テンプレートをコピー → [こちらをクリック](https://docs.google.com/spreadsheets/d/1AxYyEM0_Y7HPx0qjvx9rh5qARwE3WYhl5-dqhryr2bI/copy)
+2. コピー後のスプレッドシートIDを `config.yaml` に設定:
+   ```yaml
+   primary_source_db:
+     spreadsheet_id: "コピー後のスプレッドシートID"
+   ```
+3. 各シートに自社の体験・事例・実績を追加していく（追加するほど記事の独自性が上がる）
 
 ### 起動
 
 ```bash
-# キーワードを指定して起動
+# これだけ。キーワードを入れたら全自動で記事が完成する
 ./tools/start-seo-factory.sh "Claude Code 使い方"
 
-# 追加の指示がある場合（CTAの指定、ターゲット層の指定など）
+# 追加の指示がある場合（ターゲット層、CTA先、トーンの指定など）
 ./tools/start-seo-factory.sh "Claude Code 使い方" "30代エンジニア向け。自社サービスへのCTA付き"
+
+# 各工程を別ウィンドウで見たい場合（macOS）
+./tools/start-seo-factory.sh --visual "Claude Code 使い方"
 ```
 
-起動すると、5人のAIエージェントが順番に作業を進めます。
-全工程が完了すると通知が届きます。
+5人のAIエージェントが順番に作業を進め、完了すると通知が届きます。
+全工程のログは `tools/logs/` に保存されるので、後から確認もできます。
 
-### Claude Code のスラッシュコマンドとして登録
+### Claude Code のスラッシュコマンドとして登録（上級者向け）
 
 Claude Code を普段使っている人は、スラッシュコマンドとして登録できます：
 
 ```bash
-# プロジェクトにコピー
 cp .claude/commands/start-seo-factory.md /path/to/your/project/.claude/commands/
 ```
 
-以後、Claude Code の中で `/start-seo-factory Claude Code 使い方` と打つだけで起動できます。
+以後 `/start-seo-factory Claude Code 使い方` で起動可能。
 
 ---
 
