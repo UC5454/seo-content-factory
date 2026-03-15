@@ -1,0 +1,43 @@
+# Environment variables (API keys, credentials)
+.env
+.env.local
+.env.*.local
+
+# Config with real paths
+config.yaml
+
+# Credentials
+credentials.json
+token.json
+*.key
+*.pem
+
+# Outputs (generated content)
+outputs/
+daily-logs/
+INBOX-archive/
+factory-*.log
+seo-factory-*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# macOS
+.DS_Store
+*.swp
+*.swo
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# Node
+node_modules/
+
+# Temp
+/tmp/
+*.bak-*

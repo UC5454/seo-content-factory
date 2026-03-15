@@ -1,0 +1,86 @@
+# SEO Content Factory - Team Configuration
+# Copy this file to config.yaml and customize paths/names
+#
+# Each agent needs:
+#   - dir: working directory (contains CLAUDE.md, outputs/, daily-logs/)
+#   - inbox: INBOX.md path for inter-agent communication
+#   - iterm_profile: iTerm2 profile name (for visual mode)
+#   - skill: skill file path to execute
+
+# Base directory for all agents
+base_dir: /path/to/your/project
+
+# Company/Brand info (used in SEO brief)
+company:
+  name: "Your Company Name"
+  url: "https://example.com"
+  contact_url: "https://example.com/contact"
+  author_name: "Author Name"
+  author_title: "CEO / Founder"
+
+# Agent definitions
+agents:
+  seo_analyst:
+    name: "SEO Analyst"
+    dir: "${base_dir}/seo-analyst"
+    inbox: "${base_dir}/seo-analyst/INBOX.md"
+    iterm_profile: "AI Agent: SEO Analyst"
+    skills:
+      brief: "skills/seo-content-brief.md"
+      review: "skills/seo-aio-review.md"
+
+  researcher:
+    name: "Researcher"
+    dir: "${base_dir}/researcher"
+    inbox: "${base_dir}/researcher/INBOX.md"
+    iterm_profile: "AI Agent: Researcher"
+    skill: "skills/research-topic.md"
+
+  writer:
+    name: "Writer"
+    dir: "${base_dir}/writer"
+    inbox: "${base_dir}/writer/INBOX.md"
+    iterm_profile: "AI Agent: Writer"
+    skill: "skills/write-article.md"
+
+  designer:
+    name: "Designer"
+    dir: "${base_dir}/designer"
+    inbox: "${base_dir}/designer/INBOX.md"
+    iterm_profile: "AI Agent: Designer"
+    skill: "skills/create-thumbnail.md"
+
+  qa:
+    name: "QA Reviewer"
+    dir: "${base_dir}/qa"
+    inbox: "${base_dir}/qa/INBOX.md"
+    iterm_profile: "AI Agent: QA"
+    skill: "skills/review-article.md"
+
+  publisher:
+    name: "Publisher"
+    dir: "${base_dir}/publisher"
+    inbox: "${base_dir}/publisher/INBOX.md"
+    iterm_profile: "AI Agent: Publisher"
+    skill: "skills/publish-to-drive.md"
+
+# Google Drive integration (Phase 4)
+google_drive:
+  articles_folder_id: "your-google-drive-folder-id"
+  naming_convention: "YYYYMMDD_[slug]"
+
+# Timeouts (seconds)
+timeouts:
+  phase_0_seo_analysis: 1200  # 20 min (web search + analysis)
+  phase_1_research: 900       # 15 min
+  phase_2_writing: 1200       # 20 min
+  phase_3a_thumbnail: 900     # 15 min
+  phase_3b_qa_review: 900     # 15 min
+  phase_3c_seo_review: 1200   # 20 min
+  phase_4_publish: 600        # 10 min
+
+# Quality gates
+quality:
+  seo_score_threshold: 85       # Auto-approve above this
+  conditional_threshold: 70      # Conditional approve 70-84
+  reject_threshold: 69           # Reject below this
