@@ -2,43 +2,56 @@
 description: Launch the SEO Content Factory - full pipeline from keyword to published article
 ---
 
-Launch the SEO Content Factory. This runs a 7-phase pipeline that takes a target keyword
-and produces a fully SEO/AIO-optimized article with thumbnail, reviews, and Drive storage.
+Launch the SEO Content Factory. Runs a 7-phase pipeline that takes a target keyword
+and produces a fully SEO/AIO-optimized article with thumbnail, reviews, and storage.
+
+Works on **any terminal** (iTerm2, Antigravity, Terminal.app, Warp, Linux terminals).
 
 ## Usage
 
 ```
 /start-seo-factory target keyword
 /start-seo-factory target keyword --memo "additional instructions"
+/start-seo-factory --visual target keyword
 ```
+
+## Options
+
+- `--visual`: Open each phase in a new terminal window (macOS only, auto-detects terminal)
+- Without `--visual`: Runs headless — works everywhere, any terminal, any OS
 
 ## Execution
 
-Parse $ARGUMENTS to extract keyword and optional memo (split on --memo), then launch:
+Parse $ARGUMENTS:
+- If starts with `--visual`, extract flag and remaining as KW + memo
+- If contains `--memo`, split on it: before = KW, after = memo
+- Otherwise: all = KW, no memo
 
 ```bash
-osascript -e 'tell application "iTerm2"
-    activate
-    create window with default profile
-    tell current session of current window
-        write text "bash \"tools/start-seo-factory.sh\" \"KEYWORD\" \"MEMO\" 2>&1 | tee \"tools/seo-factory-output.log\""
-    end tell
-end tell'
+# Headless (default - works on any terminal)
+bash "tools/start-seo-factory.sh" "KEYWORD" "MEMO"
+
+# Visual (opens new windows)
+bash "tools/start-seo-factory.sh" --visual "KEYWORD" "MEMO"
 ```
 
 ## Pipeline
 
-- Phase 0: SEO Analyst (competitive analysis → brief + outline)
-- Phase 1: Researcher (SEO-focused deep research)
-- Phase 2: Writer (SEO-optimized article)
-- Phase 3a/3b/3c: Designer + QA + SEO Analyst (3 parallel reviews)
-- Phase 4: Publisher (Drive storage + notification)
+| Phase | Agent | Mode |
+|---|---|---|
+| 0 | SEO Analyst | Sequential |
+| 1 | Researcher | Sequential |
+| 2 | Writer | Sequential |
+| 3a | Designer | Parallel |
+| 3b | QA | Parallel |
+| 3c | SEO Analyst | Parallel |
+| 4 | Publisher | Sequential |
 
-## Features
+## Scoring & Quality Gate
 
 - SEO/AIO/E-E-A-T triple scoring (100 pts each)
-- Auto-reject below score 69 with improvement loop
-- Citability blocks for AI search citation
-- Schema.org markup recommendations
+- 85+: Auto-approve
+- 70-84: Conditional approve
+- ≤69: Auto-reject → Writer revision loop
 
 User input: $ARGUMENTS

@@ -36,7 +36,7 @@ Phase 4: Publisher（成果物格納・共有）
 ### 1. 前提条件
 
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) がインストール済み
-- macOS + iTerm2（ビジュアル実行モード用）
+- **どのターミナルでもOK**（iTerm2, Antigravity, Terminal.app, Warp, Linux terminals）
 - Bash 4+
 
 ### 2. セットアップ
@@ -59,12 +59,24 @@ vim config.yaml
 ### 3. 起動
 
 ```bash
-# 基本
+# ヘッドレスモード（デフォルト。どのターミナルでも動く）
 ./tools/start-seo-factory.sh "対策キーワード"
 
 # ユーザーメモ付き
 ./tools/start-seo-factory.sh "対策キーワード" "CTAはhttps://example.com/contactへ誘導"
+
+# ビジュアルモード（各Phaseが新しいターミナルウィンドウで開く。macOS）
+./tools/start-seo-factory.sh --visual "対策キーワード"
 ```
+
+#### 実行モードの違い
+
+| モード | 起動方法 | 特徴 |
+|---|---|---|
+| **ヘッドレス（デフォルト）** | `./start-seo-factory.sh "KW"` | どのOS・ターミナルでも動作。バックグラウンドで全Phase実行 |
+| **ビジュアル** | `./start-seo-factory.sh --visual "KW"` | macOS専用。各Phaseが新しいターミナルウィンドウで開く |
+
+ヘッドレスモードはAntigravity、Warp、Alacritty、Linux上のターミナルなど、claude CLIが動く環境なら全て対応。
 
 ### 4. Claude Code スラッシュコマンドとして使う
 
@@ -198,9 +210,11 @@ SEOブリーフの構成案に忠実に:
 ## Requirements
 
 - **Claude Code CLI** v1.0+
-- **macOS** (iTerm2 for visual mode, or headless mode on Linux)
+- **Any OS**: macOS, Linux, WSL (headless mode works everywhere)
+- **Any terminal**: iTerm2, Antigravity, Terminal.app, Warp, Alacritty, etc.
 - **Bash** 4+
-- Optional: Google Workspace MCP (for Phase 4 Drive integration)
+- Optional: Google Workspace integration (for Phase 4 Drive storage)
+- Optional: `--visual` flag requires macOS (auto-detects terminal app)
 
 ## License
 
