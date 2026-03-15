@@ -146,9 +146,8 @@ Googleは2025年12月のアップデートで、**全ての競争的な検索キ
 git clone https://github.com/UC5454/seo-content-factory.git
 cd seo-content-factory
 
-# 2. 設定ファイルを作成
-cp .env.example .env
-cp config.example.yaml config.yaml
+# 2. セットアップスクリプトを実行（設定ファイル作成 + 権限設定）
+./setup.sh
 
 # 3. .env を編集してAPIキーを設定
 #    ANTHROPIC_API_KEY=sk-ant-xxxxx のように入力
@@ -192,15 +191,27 @@ cp .claude/commands/start-seo-factory.md /path/to/your/project/.claude/commands/
 ```
 seo-content-factory/
 ├── tools/
-│   └── start-seo-factory.sh     # 全体を制御するオーケストレーター
-├── skills/
-│   ├── seo-content-brief.md     # 工程1の作業手順書（SEO分析・構成案作成）
-│   └── seo-aio-review.md        # 工程4の採点基準書（SEOスコアリング）
+│   └── start-seo-factory.sh      # 全体を制御するオーケストレーター
+├── skills/                        # 全エージェントの作業手順書
+│   ├── seo-content-brief.md      # 工程1: SEO分析（一次情報DB参照含む）
+│   ├── research-topic.md         # 工程2: リサーチ手順書
+│   ├── write-article.md          # 工程3: 記事執筆手順書
+│   ├── create-thumbnail.md       # 工程4a: サムネイル作成手順書
+│   ├── review-article.md         # 工程4b: 品質レビュー手順書
+│   └── seo-aio-review.md         # 工程4c: SEO/AIO採点基準書
+├── example-team/                  # エージェント作業ディレクトリ（すぐ使える）
+│   ├── seo-analyst/              # CLAUDE.md + outputs/ + INBOX.md
+│   ├── researcher/
+│   ├── writer/
+│   ├── designer/
+│   ├── qa/
+│   └── publisher/
 ├── .claude/commands/
-│   └── start-seo-factory.md     # スラッシュコマンド定義
-├── config.example.yaml          # チーム構成の設定テンプレート
-├── .env.example                 # APIキー等の設定テンプレート
-└── .gitignore                   # APIキー等を誤公開しないための除外設定
+│   └── start-seo-factory.md      # スラッシュコマンド定義
+├── setup.sh                       # 初回セットアップ（実行するだけでOK）
+├── config.example.yaml            # チーム構成テンプレート（一次情報DB設定含む）
+├── .env.example                   # APIキー等の設定テンプレート
+└── .gitignore                     # APIキー等を誤公開しないための除外設定
 ```
 
 ### 各工程の詳細
